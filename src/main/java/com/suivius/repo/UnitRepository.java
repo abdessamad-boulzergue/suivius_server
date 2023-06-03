@@ -2,14 +2,12 @@ package com.suivius.repo;
 
 
 import com.suivius.models.Article;
-import com.suivius.models.User;
+import com.suivius.models.Unit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface ArticleRepository extends JpaRepository<Article, Long> {
+public interface UnitRepository extends JpaRepository<Unit, Long> {
 
-    public  Article findByTitle(String title);
+    public Unit findByTitle(String title);
 }

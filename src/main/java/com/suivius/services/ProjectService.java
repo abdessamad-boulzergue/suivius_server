@@ -7,6 +7,7 @@ import com.suivius.rest.dto.ProjectDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,5 +31,13 @@ public class ProjectService {
         List<Project> projects = projectRepository.findAffectedToUser(userId);
         return projects.stream().map(p-> projectMapper.toDTO(p))
                 .collect(Collectors.toList());
+    }
+
+    public Project get(Long projectId) {
+        Optional<Project> optProject = projectRepository.findById(projectId);
+        if(optProject.isPresent())
+            return  optProject.get() ;
+        else
+            return null;
     }
 }

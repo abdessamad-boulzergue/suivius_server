@@ -20,6 +20,8 @@ public class Project {
     private StepStatus stepStatus;
     private String title;
 
+    @OneToOne
+    private Localisation localisation;
     /**
      * prestataire
      */
@@ -119,5 +121,13 @@ public class Project {
 
     public void setTss(Tss tss) {
         this.tss = tss;
+    }
+
+    public Localisation getLocalisation() {
+        return localisation;
+    }
+
+    public void setLocalisation(Localisation localisation) {
+        this.localisation = localisation;
     }
 }

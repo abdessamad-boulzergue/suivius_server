@@ -25,16 +25,16 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authz) -> authz
-                        .anyRequest().authenticated()
-                )
-                .httpBasic(withDefaults());
+                .authorizeRequests()
+                .antMatchers("/suivius/api/v1/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .csrf().disable();
         return http.build();
     }
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring()
-                .antMatchers("/suivius/api/v1/projects/**","/suivius/api/v1/permissions/**");
+        return (web) -> web.ignoring();
     }
 
 /*

@@ -60,4 +60,9 @@ public class Tss {
     public void setSiteType(SiteType siteType) {
         this.siteType = siteType;
     }
+
+    @Override
+    public String toString() {
+        return this.siteType.getTitle() + " "+this.cableType.getTitle();
+    }
 }

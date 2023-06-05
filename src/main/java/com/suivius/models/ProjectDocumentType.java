@@ -3,7 +3,8 @@ package com.suivius.models;
 public enum ProjectDocumentType {
 
     CROQUIS("CROQUIS"),
-    APD("APD");
+    APD("APD"),
+    UNKOWN("UNKOWN");
 
     private final String type;
     ProjectDocumentType(String type){

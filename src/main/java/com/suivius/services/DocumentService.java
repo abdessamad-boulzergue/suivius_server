@@ -2,6 +2,7 @@ package com.suivius.services;
 
 import com.suivius.models.Document;
 import com.suivius.models.Project;
+import com.suivius.models.ProjectDocumentType;
 import com.suivius.models.ProjectDocuments;
 import com.suivius.repo.DocumentRepository;
 import com.suivius.repo.ProjectDocumentsRepository;
@@ -9,9 +10,12 @@ import com.suivius.resource.IResource;
 import com.suivius.resource.Resource;
 import com.suivius.resource.ResourceStorageService;
 import com.suivius.rest.dto.NewDocumentDto;
-import com.suivius.rest.dto.ProjectDto;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 
 @Service
@@ -19,14 +23,12 @@ public class DocumentService {
 
     private DocumentRepository documentRepository;
     private ProjectDocumentsRepository projectDocumentsRepository;
-    private ProjectService projectService;
 
     ResourceStorageService resourceLoader;
 
-    public  DocumentService(DocumentRepository documentRepository,  ProjectService projectService,
+    public  DocumentService(DocumentRepository documentRepository,
                             ProjectDocumentsRepository projectDocumentsRepository, ResourceStorageService resourceLoader){
         this.documentRepository =documentRepository;
-        this.projectService =projectService;
         this.projectDocumentsRepository =projectDocumentsRepository;
         this.resourceLoader =resourceLoader;
     }
@@ -38,9 +40,8 @@ public class DocumentService {
         resourceLoader.saveResource(document, content.getBytes());
     }
 
-    public void addDocument(Long projectId, NewDocumentDto documentDto) {
+    public void addDocument(Project project, NewDocumentDto documentDto) {
 
-        Project project = this.projectService.get(projectId);
         if(project !=null){
 
             Document doc = new Document();
@@ -55,5 +56,39 @@ public class DocumentService {
             projectDocumentsRepository.save(documents);
         }
 
+    }
+
+    public void addDocument(Project project, MultipartFile file, String type) {
+        if(project !=null){
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            Document doc = new Document();
+            doc.setType(file.getContentType());
+            doc.setTitle(fileName);
+            documentRepository.save(doc);
+            try {
+                writeResourceToFile(fileName,file.getResource().getInputStream());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            ProjectDocuments documents = new ProjectDocuments();
+            documents.setProject(project);
+            documents.setDocument(doc);
+            documents.setType(ProjectDocumentType.valueOf(type));
+            projectDocumentsRepository.save(documents);
+        }
+    }
+    private ProjectDocumentType getType(String type){
+        try {
+            return ProjectDocumentType.valueOf(type);
+        }catch (Exception ex){
+            return ProjectDocumentType.UNKOWN;
+        }
+
+    }
+    private void writeResourceToFile(String fileName, InputStream inputStream) throws IOException {
+        byte[] bytes = inputStream.readAllBytes();
+        IResource document = new Resource(fileName,fileName, bytes.length, new Date());
+        resourceLoader.saveResource(document, bytes);
     }
 }

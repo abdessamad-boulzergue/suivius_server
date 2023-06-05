@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.suivius.models.Step;
 import lombok.Data;
 
+import java.util.Set;
+
 @JsonSerialize
 public class ProjectDto {
 
@@ -19,7 +21,18 @@ public class ProjectDto {
     private CategoryDto category;
 
     @JsonProperty
+    private LocalisationDto localisation;
+    @JsonProperty
     private StepStatusDto  stepStatus;
+
+    @JsonProperty
+    private TssDto  tss;
+
+    @JsonProperty
+    private Set<BoqDto> boq;
+
+    @JsonProperty
+    private Set<WorkDetailsDto> workDetails;
 
 
     public void setTitle(String title){
@@ -59,5 +72,37 @@ public class ProjectDto {
 
     public void setStepStatus(StepStatusDto status) {
         this.stepStatus = status;
+    }
+
+    public TssDto getTss() {
+        return tss;
+    }
+
+    public void setTss(TssDto tss) {
+        this.tss = tss;
+    }
+
+    public Set<BoqDto> getBoq() {
+        return boq;
+    }
+
+    public void setBoq(Set<BoqDto> boq) {
+        this.boq = boq;
+    }
+
+    public Set<WorkDetailsDto> getWorkDetails() {
+        return workDetails;
+    }
+
+    public void setWorkDetails(Set<WorkDetailsDto> workDetails) {
+        this.workDetails = workDetails;
+    }
+
+    public LocalisationDto getLocalisation() {
+        return localisation;
+    }
+
+    public void setLocalisation(LocalisationDto localisation) {
+        this.localisation = localisation;
     }
 }

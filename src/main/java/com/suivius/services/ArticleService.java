@@ -9,6 +9,7 @@ import com.suivius.rest.mappers.ArticleMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,5 +35,10 @@ public class ArticleService {
     }
     public Article save(Article article){
         return  articleRepository.save(article);
+    }
+
+    public Article getById(Long articleId) {
+        Optional<Article> article = articleRepository.findById(articleId);
+        return  article.isPresent()? article.get() : null;
     }
 }

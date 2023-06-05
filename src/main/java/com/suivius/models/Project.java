@@ -2,6 +2,8 @@ package com.suivius.models;
 
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Project {
@@ -36,6 +38,13 @@ public class Project {
 
     @ManyToOne
     private Tss tss;
+
+    @OneToMany(mappedBy = "project")
+    private Set<BOQ> boq;
+
+
+    @OneToMany(mappedBy = "project")
+    private Set<ProjectWorkDetails> workDetails;
 
     /**
      * type de prestation
@@ -129,5 +138,21 @@ public class Project {
 
     public void setLocalisation(Localisation localisation) {
         this.localisation = localisation;
+    }
+
+    public Set<BOQ> getBoq() {
+        return boq;
+    }
+
+    public void setBoq(Set<BOQ> boq) {
+        this.boq = boq;
+    }
+
+    public Set<ProjectWorkDetails> getWorkDetails() {
+        return workDetails;
+    }
+
+    public void setWorkDetails(Set<ProjectWorkDetails> workDetails) {
+        this.workDetails = workDetails;
     }
 }

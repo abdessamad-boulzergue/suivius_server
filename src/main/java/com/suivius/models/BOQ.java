@@ -12,6 +12,8 @@ public class BOQ {
     @ManyToOne
     private Article article;
 
+    @ManyToOne
+    private Project project;
     private double quantity;
 
     public Long getId() {
@@ -36,5 +38,13 @@ public class BOQ {
 
     public void setQuantity(double quantity) {
         this.quantity = quantity;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

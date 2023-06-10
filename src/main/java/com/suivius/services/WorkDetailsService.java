@@ -24,9 +24,13 @@ public class WorkDetailsService {
     public void save(Project project,ProjectWorkDetailsDto dto){
         WorkInfo workInfo = workInfoRepository.findById(dto.workInfoId)
                 .orElseThrow(()-> new ResourceNotFoundException("workInfo not found with id "+dto.workInfoId));
-        ProjectWorkDetails projectWorkDetails = new ProjectWorkDetails();
-        projectWorkDetails.setProject(project);
-        projectWorkDetails.setInfo(workInfo);
+        ProjectWorkDetails projectWorkDetails = workDetailsRepository.findByInfoIdAndProjectId(workInfo.getId(),project.getId());
+        if(projectWorkDetails==null) {
+             projectWorkDetails = new ProjectWorkDetails();
+            projectWorkDetails.setProject(project);
+            projectWorkDetails.setInfo(workInfo);
+        }
+        projectWorkDetails.setValue(dto.value);
         workDetailsRepository.save(projectWorkDetails);
     }
 

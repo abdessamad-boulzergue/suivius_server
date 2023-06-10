@@ -3,6 +3,7 @@ package com.suivius.rest.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.suivius.models.Step;
+import com.suivius.repo.Issue;
 import lombok.Data;
 
 import java.util.Set;
@@ -30,6 +31,9 @@ public class ProjectDto {
 
     @JsonProperty
     private Set<BoqDto> boq;
+
+    @JsonProperty
+    private Set<IssueDto> issues;
 
     @JsonProperty
     private Set<WorkDetailsDto> workDetails;
@@ -104,5 +108,13 @@ public class ProjectDto {
 
     public void setLocalisation(LocalisationDto localisation) {
         this.localisation = localisation;
+    }
+
+    public Set<IssueDto> getIssues() {
+        return issues;
+    }
+
+    public void setIssues(Set<IssueDto> issues) {
+        this.issues = issues;
     }
 }

@@ -1,6 +1,8 @@
 package com.suivius.models;
 
 
+import com.suivius.repo.Issue;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +43,9 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private Set<BOQ> boq;
+
+    @OneToMany(mappedBy = "project")
+    private Set<Issue> issues;
 
 
     @OneToMany(mappedBy = "project")
@@ -154,5 +159,13 @@ public class Project {
 
     public void setWorkDetails(Set<ProjectWorkDetails> workDetails) {
         this.workDetails = workDetails;
+    }
+
+    public Set<Issue> getIssues() {
+        return issues;
+    }
+
+    public void setIssues(Set<Issue> issues) {
+        this.issues = issues;
     }
 }

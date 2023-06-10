@@ -7,7 +7,7 @@ import com.suivius.rest.dto.ProjectDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {TssMapper.class,BoqMapper.class,WorkDetailsMapper.class})
+@Mapper(componentModel = "spring", uses = {TssMapper.class,IssueMapper.class,BoqMapper.class,WorkDetailsMapper.class,LocalisationMapper.class})
 public interface ProjectMapper {
 
     ProjectDto toDTO(Project project);

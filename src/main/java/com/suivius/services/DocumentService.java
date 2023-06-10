@@ -16,7 +16,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.suivius.helpers.Constants.IMAGE_JPEG;
 
 @Service
 public class DocumentService {
@@ -74,7 +80,7 @@ public class DocumentService {
             ProjectDocuments documents = new ProjectDocuments();
             documents.setProject(project);
             documents.setDocument(doc);
-            documents.setType(ProjectDocumentType.valueOf(type));
+            documents.setType(getType(type));
             projectDocumentsRepository.save(documents);
         }
     }
@@ -90,5 +96,43 @@ public class DocumentService {
         byte[] bytes = inputStream.readAllBytes();
         IResource document = new Resource(fileName,fileName, bytes.length, new Date());
         resourceLoader.saveResource(document, bytes);
+    }
+    public List<ProjectDocuments> getProjectDocuments(Long projectId){
+       return projectDocumentsRepository.findByProjectId(projectId);
+    }
+    public List<Document> getDocumentsByProjectId(Long projectId){
+        List<ProjectDocuments> projectDocs=  projectDocumentsRepository.findByProjectId(projectId);
+        List<Document> documents = new ArrayList<>();
+        if(projectDocs!=null ){
+            documents=  projectDocs.stream().map(doc->doc.getDocument())
+                    .collect(Collectors.toList());
+        }
+        return documents;
+    }
+
+    private byte[] readResourceFromFile(String fileName ) throws IOException {
+        return resourceLoader.loadContent(fileName);
+    }
+    public byte[] getContent(String fileName)  {
+        try {
+            return readResourceFromFile(fileName);
+        } catch (IOException e) {
+            return new byte[]{};
+        }
+    }
+
+    public boolean isImage(Document document) {
+        return document!=null && document.getType()!=null && IMAGE_JPEG.equals(document.getType());
+    }
+
+    public String encodeContent(Document document) {
+        byte[] docBytes = getContent(document.getTitle());
+        if(docBytes!=null &&  isImage(document) ) {
+            return  "data:image/jpeg;base64,"+ Base64.getEncoder().encodeToString(docBytes);
+        }else if(docBytes!=null){
+            return  ""+ Base64.getEncoder().encodeToString(docBytes);
+        }else{
+            return "";
+        }
     }
 }

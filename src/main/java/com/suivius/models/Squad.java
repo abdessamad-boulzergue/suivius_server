@@ -27,4 +27,36 @@ public class Squad {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public StaffMember getMember() {
+        return member;
+    }
+
+    public void setMember(StaffMember member) {
+        this.member = member;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public LocalTime getNormalHours() {
+        return normalHours;
+    }
+
+    public void setNormalHours(LocalTime normalHours) {
+        this.normalHours = normalHours;
+    }
+
+    public LocalTime getAdditionalHours() {
+        return additionalHours;
+    }
+
+    public void setAdditionalHours(LocalTime additionalHours) {
+        this.additionalHours = additionalHours;
+    }
 }

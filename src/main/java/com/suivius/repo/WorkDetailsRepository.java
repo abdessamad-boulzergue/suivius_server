@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WorkDetailsRepository  extends JpaRepository<ProjectWorkDetails,Long> {
+
+    ProjectWorkDetails findByInfoIdAndProjectId(Long infoId, Long ProjectId);
 }

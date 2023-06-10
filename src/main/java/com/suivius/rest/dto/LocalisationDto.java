@@ -11,4 +11,5 @@ public class LocalisationDto {
     public String province;
 
     public String address;
+    public String site;
 }

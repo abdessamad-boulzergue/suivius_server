@@ -1,10 +1,7 @@
 package com.suivius.rest.controllers;
 
 import com.suivius.rest.dto.ReferenceDto;
-import com.suivius.services.CableTypeService;
-import com.suivius.services.ConnectionTypeService;
-import com.suivius.services.EquipmentTypeService;
-import com.suivius.services.SiteTypeService;
+import com.suivius.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +18,14 @@ public class ReferenceController {
     EquipmentTypeService equipmentTypeService;
     @Autowired
     CableTypeService cableTypeService;
+    @Autowired
+    StaffService staffService;
 
+    @Autowired
+    ArticleService articleService;
+
+    @Autowired
+    WorkToolService workToolService;
 
     @GetMapping
     public ReferenceDto getReferences(){
@@ -31,6 +35,9 @@ public class ReferenceController {
         dto.siteTypes = siteTypeService.getAll();
         dto.equipmentTypes = equipmentTypeService.getAll();
         dto.connectionTypes = connectionTypeService.getAll();
+        dto.staff = staffService.getStaff();
+        dto.articles = articleService.getAll();
+        dto.tools = workToolService.getTools();
 
         return  dto;
     }

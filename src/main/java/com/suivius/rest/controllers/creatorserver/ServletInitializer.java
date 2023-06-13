@@ -1,4 +1,4 @@
-package com.suivius.creatorserver;
+package com.suivius.rest.controllers.creatorserver;
 
 import com.suivius.CreatorServerApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;

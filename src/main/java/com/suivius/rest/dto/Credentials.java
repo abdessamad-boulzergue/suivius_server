@@ -2,18 +2,13 @@ package com.suivius.rest.dto;
 
 import org.json.JSONObject;
 
-public class Credentials {
-	  
-	  /**
-	   * 
-	   */
-	  private static final long serialVersionUID = -6415737974521493014L;
 
+public class Credentials {
 	  private String username;
-	  
+
 	  private String password;
-	  
-	  
+
+
 	  /**
 	   * @return the username
 	   */

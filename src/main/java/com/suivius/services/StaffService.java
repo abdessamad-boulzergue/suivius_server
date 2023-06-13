@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,10 +48,10 @@ public class StaffService {
 
     }
 
-    public List<SquadDto> getSquad(Long projectId) {
-        List<Squad> staff = this.squadRepository.findByProjectId(projectId);
+    public Set<SquadDto> getSquad(Long projectId) {
+        Set<Squad> staff = this.squadRepository.findByProjectId(projectId);
         return staff.stream().map(squad -> this.squadMapper.toDTO(squad))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     public void addToSquad(Long projectId, PostSquadDto postSquadDto) {
@@ -68,7 +69,7 @@ public class StaffService {
                 squad.setProject(project);
                 squad.setNormalHours(squadDto.normalHours);
                 squad.setAdditionalHours(squadDto.additionalHours);
-
+                squad.setDate(squadDto.date);
                 squadRepository.save(squad);
             });
         }

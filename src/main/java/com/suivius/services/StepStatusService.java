@@ -73,4 +73,11 @@ public class StepStatusService {
                 .orElseThrow(() -> new ResourceNotFoundException("status not found with id :" + Constants.STATUS_AUTHORIZATION_WAITING));
 
     }
+
+    public StepStatus getNotStarted() {
+        return stepStatusRepository.findById(Constants.STATUS_STUDY_NOT_START)
+                .orElseThrow(() -> new ResourceNotFoundException("status not found with id :" + Constants.STATUS_STUDY_NOT_START));
+
+    }
+
 }

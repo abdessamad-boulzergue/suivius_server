@@ -19,10 +19,10 @@ import javax.sql.DataSource;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@Configuration
+
 public class SecurityConfiguration {
 
-    @Bean
+
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                 .csrf().disable();
         return http.build();
     }
-    @Bean
+
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring();
     }
@@ -52,7 +52,7 @@ public class SecurityConfiguration {
         return users;
     }
 */
-    @Bean
+
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

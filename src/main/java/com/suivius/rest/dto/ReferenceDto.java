@@ -14,4 +14,7 @@ public class ReferenceDto {
     public  List<ConnectionType> connectionTypes;
     public List<SiteType> siteTypes;
 
+    public List<StaffDto> staff;
+    public List<ArticleDto> articles;
+    public List<ToolDto> tools;
 }

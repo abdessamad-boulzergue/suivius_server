@@ -9,6 +9,7 @@ import com.suivius.rest.mappers.ToolUsageMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,10 +40,10 @@ public class WorkToolService {
 
     }
 
-    public List<ToolUsageDto> getToolsUsage(Long projectId) {
-        List<ToolsUsage> tools = this.toolUsageRepository.findByProjectId(projectId);
+    public Set<ToolUsageDto> getToolsUsage(Long projectId) {
+        Set<ToolsUsage> tools = this.toolUsageRepository.findByProjectId(projectId);
         return tools.stream().map(tool -> this.toolUsageMapper.toDTO(tool))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     public void addToolsUsage(Long projectId, PostToolsUsageDto postToolsUsageDto) {
@@ -58,6 +59,7 @@ public class WorkToolService {
                         .orElseThrow(()-> new ResourceNotFoundException("project not found with id "+ projectId));
                 usage.setTool(workTool);
                 usage.setProject(project);
+                usage.setDate(toolUsageDto.date);
                 usage.setTimeUsage(toolUsageDto.timeUsage);
 
                 toolUsageRepository.save(usage);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("suivius/api/v1/tools")
@@ -23,7 +24,7 @@ public class ToolsController {
     }
 
     @GetMapping("/project/{projectId}")
-    public List<ToolUsageDto> getToolsUsage(@PathVariable Long projectId ){
+    public Set<ToolUsageDto> getToolsUsage(@PathVariable Long projectId ){
         return  workToolService.getToolsUsage(projectId);
     }
 

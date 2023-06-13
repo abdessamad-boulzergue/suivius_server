@@ -28,7 +28,8 @@ public class ProjectDto {
 
     @JsonProperty
     private TssDto  tss;
-
+    @JsonProperty
+    private AuthorizationDto authorization;
     @JsonProperty
     private Set<BoqDto> boq;
 
@@ -38,7 +39,11 @@ public class ProjectDto {
     @JsonProperty
     private Set<WorkDetailsDto> workDetails;
 
+    @JsonProperty
+    private Set<SquadDto> squad;
 
+    @JsonProperty
+    private Set<ToolUsageDto> toolsUsage;
     public void setTitle(String title){
         this.title = title;
     }
@@ -116,5 +121,29 @@ public class ProjectDto {
 
     public void setIssues(Set<IssueDto> issues) {
         this.issues = issues;
+    }
+
+    public AuthorizationDto getAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(AuthorizationDto authorization) {
+        this.authorization = authorization;
+    }
+
+    public Set<SquadDto> getSquad() {
+        return squad;
+    }
+
+    public void setSquad(Set<SquadDto> squad) {
+        this.squad = squad;
+    }
+
+    public Set<ToolUsageDto> getToolsUsage() {
+        return toolsUsage;
+    }
+
+    public void setToolsUsage(Set<ToolUsageDto> toolsUsage) {
+        this.toolsUsage = toolsUsage;
     }
 }

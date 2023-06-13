@@ -1,7 +1,9 @@
 package com.suivius.rest.controllers;
 
 import com.suivius.models.Project;
+import com.suivius.models.Authorization;
 import com.suivius.rest.dto.*;
+import com.suivius.rest.mappers.AuthorizationMapper;
 import com.suivius.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,8 @@ public class ProjectsController {
 
     @Autowired
     ProjectService  projectService;
+    @Autowired
+    AuthorizationMapper authorizationMapper;
     @GetMapping
     public List<ProjectDto> getProjects(){
         return projectService.getAll();
@@ -26,6 +30,12 @@ public class ProjectsController {
     @PostMapping("{project_id}/issue")
     public void addIssue(@PathVariable  Long project_id,@RequestBody IssueDto  issueDto){
          projectService.addIssue(project_id,issueDto);
+    }
+
+    @PostMapping("{project_id}/authorization")
+    public AuthorizationDto addAuthorization(@PathVariable  Long project_id, @RequestBody AuthorizationDto  authorizationDto){
+        Authorization authorization = projectService.addAuthorization(project_id, authorizationDto);
+        return authorizationMapper.toDTO(authorization);
     }
 
     @PutMapping("{project_id}/issue")
@@ -97,16 +107,16 @@ public class ProjectsController {
         return responseDto;
     }
     @PostMapping("{project_id}/study")
-    public StepUpdateResponseDto startStudy(@PathVariable  Long project_id){
-       Project project= projectService.startStudy(project_id);
+    public StepUpdateResponseDto startStudy(@PathVariable  Long project_id, @RequestBody PostStartStudyDto startStudyDto){
+       Project project= projectService.startStudy(project_id,startStudyDto);
         StepUpdateResponseDto responseDto = new StepUpdateResponseDto();
         responseDto.projectId =project.getId();
         responseDto.stepStatusId = project.getStepStatus().getId();
         return responseDto;
     }
     @PostMapping("{project_id}/tss/edition")
-    public StepUpdateResponseDto startTss(@PathVariable  Long project_id){
-        Project project= projectService.startTss(project_id);
+    public StepUpdateResponseDto startTss(@PathVariable  Long project_id,@RequestBody PostStartTssDto startTssDto){
+        Project project= projectService.startTss(project_id,startTssDto);
         StepUpdateResponseDto responseDto = new StepUpdateResponseDto();
         responseDto.projectId =project.getId();
         responseDto.stepStatusId = project.getStepStatus().getId();

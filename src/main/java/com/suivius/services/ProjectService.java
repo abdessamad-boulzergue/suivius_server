@@ -1,11 +1,9 @@
 package com.suivius.services;
 
 import com.suivius.models.*;
-import com.suivius.repo.BOQRepository;
-import com.suivius.repo.Issue;
+import com.suivius.repo.*;
 import com.suivius.rest.dto.*;
 import com.suivius.rest.mappers.ProjectMapper;
-import com.suivius.repo.ProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,12 +26,20 @@ public class ProjectService {
     private final BOQRepository boqRepository;
     private final StepStatusService stepStatusService;
     private final IssueService issueService;
+    private final StaffService staffService;
+    private final WorkToolService workToolService;
+    private final ProjectAuthorizationRepository authorizationRepository;
+    private final HistoryService historyService;
+
+    private final LocalisationRepository localisationRepository;
 
     public ProjectService(ProjectRepository projectRepository, ProjectMapper projectMapper,
                           TssService tssService,DocumentService documentService,
                           WorkDetailsService workDetailsService,BOQRepository boqRepository,
                           ArticleService articleService,StepStatusService stepStatusService,
-                          IssueService issueService) {
+                          IssueService issueService,ProjectAuthorizationRepository authorizationRepository,
+                          StaffService staffService,WorkToolService workToolService,HistoryService historyService,
+                          LocalisationRepository localisationRepository) {
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
         this.tssService =tssService;
@@ -43,6 +49,11 @@ public class ProjectService {
         this.articleService=articleService;
         this.stepStatusService =stepStatusService;
         this.issueService = issueService;
+        this.authorizationRepository =authorizationRepository;
+        this.staffService =staffService;
+        this.workToolService =workToolService;
+        this.historyService = historyService;
+        this.localisationRepository = localisationRepository;
     }
 
     public List<ProjectDto> getAll(){
@@ -53,7 +64,14 @@ public class ProjectService {
 
     public List<ProjectDto> getUserProjects(Long userId) {
         List<Project> projects = projectRepository.findAffectedToUser(userId);
-        return projects.stream().map(p-> projectMapper.toDTO(p))
+        return projects.stream().map(p-> {
+
+                    ProjectDto dto = projectMapper.toDTO(p);
+                    dto.setSquad(staffService.getSquad(p.getId()));
+                    dto.setToolsUsage(workToolService.getToolsUsage(p.getId()));
+                    return  dto;
+
+                })
                 .collect(Collectors.toList());
     }
 
@@ -211,17 +229,48 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public Project startStudy(Long project_id) {
+    public Project startStudy(Long project_id, PostStartStudyDto startStudyDto) {
         Project project = get(project_id);
         project.setStepStatus(stepStatusService.getStartStudy());
         projectRepository.save(project);
+
+        this.historyService.addHistory(project,stepStatusService.getNotStarted(),project.getStepStatus(),startStudyDto.deviceId,null);
         return project;
     }
 
-    public Project startTss(Long project_id) {
+    public Project startTss(Long project_id,  PostStartTssDto startTssDto) {
         Project project = get(project_id);
         project.setStepStatus(stepStatusService.getTSSEdition());
         projectRepository.save(project);
+
+        Localisation localisation = new Localisation();
+        localisation.setLat(startTssDto.latitude);
+        localisation.setLng(startTssDto.longitude);
+        localisationRepository.save(localisation);
+
+        this.historyService.addHistory(project,stepStatusService.getStartStudy(),project.getStepStatus(),startTssDto.deviceId,localisation);
+
         return project;
+    }
+
+    public Authorization addAuthorization(Long project_id, AuthorizationDto authorizationDto) {
+        Project project = get(project_id);
+        if(project!=null){
+
+            Authorization authorization = project.getAuthorization();
+            if(authorization==null) authorization = new Authorization();
+            authorization.setDateCommission(authorizationDto.dateCommission);
+            authorization.setDateDecision(authorizationDto.dateDecision);
+            authorization.setDateDemand(authorizationDto.dateDemand);
+            authorization.setDatePayment(authorizationDto.datePayment);
+            authorization.setDateSign(authorizationDto.dateSign);
+            this.authorizationRepository.save(authorization);
+            project.setAuthorization(authorization);
+            projectRepository.save(project);
+
+            return  authorization;
+
+        }
+        return null;
     }
 }

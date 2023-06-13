@@ -4,7 +4,6 @@ package com.suivius.models;
 import com.suivius.repo.Issue;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,6 +25,9 @@ public class Project {
 
     @OneToOne
     private Localisation localisation;
+
+    @OneToOne
+    private Authorization authorization;
     /**
      * prestataire
      */
@@ -167,5 +169,13 @@ public class Project {
 
     public void setIssues(Set<Issue> issues) {
         this.issues = issues;
+    }
+
+    public Authorization getAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(Authorization authorization) {
+        this.authorization = authorization;
     }
 }

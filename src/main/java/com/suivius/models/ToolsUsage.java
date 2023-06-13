@@ -1,6 +1,7 @@
 package com.suivius.models;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
@@ -17,7 +18,7 @@ public class ToolsUsage {
     private Project project;
 
     private LocalTime timeUsage;
-
+    private LocalDate date;
     public Long getId() {
         return id;
     }
@@ -48,5 +49,13 @@ public class ToolsUsage {
 
     public void setTimeUsage(LocalTime timeUsage) {
         this.timeUsage = timeUsage;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

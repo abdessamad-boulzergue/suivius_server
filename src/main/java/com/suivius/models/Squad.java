@@ -1,6 +1,7 @@
 package com.suivius.models;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
@@ -19,6 +20,8 @@ public class Squad {
     private LocalTime normalHours;
 
     private LocalTime additionalHours;
+
+    private LocalDate date;
 
     public Long getId() {
         return id;
@@ -58,5 +61,13 @@ public class Squad {
 
     public void setAdditionalHours(LocalTime additionalHours) {
         this.additionalHours = additionalHours;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }
